@@ -1,0 +1,29 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**/*.ts"
+    ]
+  },
+  "jsRules": {},
+  "rules": {
+    "prettier": [
+      true,
+      {
+        "semi": true,
+        "singleQuote": true,
+        "printWidth": 120,
+        "trailingComma": "es5"
+      }
+    ],
+    "ordered-imports": false,
+    "interface-name": false
+  },
+  "rulesDirectory": [
+    "tslint-plugin-prettier"
+  ]
+}
