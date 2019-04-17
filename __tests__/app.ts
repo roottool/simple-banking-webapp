@@ -18,6 +18,12 @@ describe('POST /balences', () => {
 });
 
 describe('GET /balences/balancesId', () => {
+  it('If the balance exists, get data.', async () => {
+    const result = await request(app).get('/balances/0');
+    expect(result.status).toBe(200);
+    expect(result.body).toBeTruthy();
+  });
+
   it('If the balance does not exist, throw 404 error.', async () => {
     const result = await request(app).get('/balances/1');
     expect(result.status).toBe(404);

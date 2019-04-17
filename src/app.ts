@@ -7,7 +7,7 @@ import config from './firebase/config';
 
 firebase.initializeApp(config);
 const db = firebase.firestore();
-const balances = 'Balances';
+const balancesStore = db.collection('balances');
 const app = Express();
 
 app.use(
@@ -24,6 +24,9 @@ if (process.env.NODE_ENV === 'development') {
   });
 }
 
+const badRequest = 'Bad request';
+const notFound = 'Not Found';
+
 app.post('/balances', async (req, res) => {
   const recievedData: BalanceCreateRequestBody = req.body;
   const sendData: BalanceCreateResponseBody = {
@@ -34,19 +37,31 @@ app.post('/balances', async (req, res) => {
     },
   };
 
-  return await db
-    .collection(balances)
-    .add(sendData)
+  await balancesStore
+    .doc(sendData.balance.id.toString())
+    .set(sendData)
     .then(() => {
-      res.send(sendData);
+      return res.status(200).send(sendData);
     })
     .catch(() => {
-      res.status(400);
+      return res.status(400).send(badRequest);
     });
 });
 
-app.get('/balances/:balanceId', (req, res) => {
-  return res.status(404).send('Not found');
+app.get('/balances/:balanceId', async (req, res) => {
+  await balancesStore
+    .doc(req.params.balanceId.toString())
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        return res.send(doc.data());
+      } else {
+        return res.status(404).send(notFound);
+      }
+    })
+    .catch(() => {
+      return res.status(400).send(badRequest);
+    });
 });
 
 export default app;
