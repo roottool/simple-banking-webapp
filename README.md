@@ -1,6 +1,6 @@
 # simple-banking-webapp
 
-This is a simple banking webapp.
+This is a simple banking webapp.  
 This uses [Firestore](https://firebase.google.com/products/firestore/).
 
 ## Install
