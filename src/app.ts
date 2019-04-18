@@ -9,6 +9,7 @@ import config from './firebase/config';
 firebase.initializeApp(config);
 const db = firebase.firestore();
 const balancesStore = db.collection('balances');
+const depositsStore = db.collection('deposits');
 const app = Express();
 
 app.use(
@@ -66,7 +67,25 @@ app.get('/balances/:balanceId', async (req, res) => {
 });
 
 app.post('/deposits', async (req, res) => {
-  return res.status(400).send(badRequest);
+  const recievedData: DepositCreateRequestBody = req.body;
+  const sendData: DepositCreateResponseBody = {
+    deposit: {
+      id: 0,
+      balanceId: recievedData.balanceId,
+      amount: recievedData.amount,
+      createdAt: new Date(),
+    },
+  };
+
+  await depositsStore
+    .doc(sendData.deposit.id.toString())
+    .set(sendData)
+    .then(() => {
+      return res.status(200).send(sendData);
+    })
+    .catch(() => {
+      return res.status(400).send(badRequest);
+    });
 });
 
 export default app;
