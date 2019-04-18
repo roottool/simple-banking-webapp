@@ -88,4 +88,20 @@ app.post('/deposits', async (req, res) => {
     });
 });
 
+app.get('/deposits/:id', async (req, res) => {
+  await depositsStore
+    .doc(req.params.id.toString())
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        return res.send(doc.data());
+      } else {
+        return res.status(404).send(notFound);
+      }
+    })
+    .catch(() => {
+      return res.status(400).send(badRequest);
+    });
+});
+
 export default app;
