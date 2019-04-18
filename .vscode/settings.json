@@ -1,6 +1,7 @@
 {
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
+  "emptyIndent.exclude": [".md"],
   "prettier.singleQuote": true,
   "prettier.semi": true,
   "prettier.printWidth": 120,
