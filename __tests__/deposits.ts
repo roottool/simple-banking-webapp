@@ -17,6 +17,19 @@ describe('POST /deposits', () => {
   });
 });
 
+describe('GET /deposits', () => {
+  it('If deposits exist, get data.', async () => {
+    const result = await request(app).get('/deposits');
+    expect(result.status).toBe(200);
+    expect(result.body).toBeTruthy();
+  });
+
+  it('If deposits do not exist, throw 404 error.', async () => {
+    const result = await request(app).get('/deposits');
+    expect(result.status).toBe(404);
+  });
+});
+
 describe('GET /deposits/:id', () => {
   it('If the deposit exists, get data.', async () => {
     const result = await request(app).get('/deposits/0');
