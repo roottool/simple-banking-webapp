@@ -18,15 +18,10 @@ describe('POST /deposits', () => {
 });
 
 describe('GET /deposits', () => {
-  it('If deposits exist, get data.', async () => {
+  it('Get all deposit data', async () => {
     const result = await request(app).get('/deposits');
     expect(result.status).toBe(200);
     expect(result.body).toBeTruthy();
-  });
-
-  it('If deposits do not exist, throw 404 error.', async () => {
-    const result = await request(app).get('/deposits');
-    expect(result.status).toBe(404);
   });
 });
 

@@ -3,7 +3,7 @@ import BodyParser from 'body-parser';
 import firebase from 'firebase';
 
 import { BalanceCreateRequestBody, BalanceCreateResponseBody } from './models/balances';
-import { DepositCreateRequestBody, DepositCreateResponseBody } from './models/deposits';
+import { Deposit, DepositCreateRequestBody, DepositCreateResponseBody } from './models/deposits';
 import config from './firebase/config';
 
 firebase.initializeApp(config);
@@ -82,6 +82,31 @@ app.post('/deposits', async (req, res) => {
     .set(sendData)
     .then(() => {
       return res.status(200).send(sendData);
+    })
+    .catch(() => {
+      return res.status(400).send(badRequest);
+    });
+});
+
+const fetchAllDeposits = (querySnapshot: firebase.firestore.QuerySnapshot): Deposit[] => {
+  const alldepositData: Deposit[] = [];
+
+  querySnapshot.forEach(doc => {
+    alldepositData.push(doc.data() as Deposit);
+  });
+
+  return alldepositData;
+};
+
+app.get('/deposits', async (req, res) => {
+  await depositsStore
+    .get()
+    .then(querySnapshot => {
+      if (querySnapshot.empty) {
+        return res.status(404).send(notFound);
+      } else {
+        return res.send(fetchAllDeposits(querySnapshot));
+      }
     })
     .catch(() => {
       return res.status(400).send(badRequest);
