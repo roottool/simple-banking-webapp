@@ -19,13 +19,6 @@ app.use(
 );
 app.use(BodyParser.json());
 
-if (process.env.NODE_ENV === 'development') {
-  app.listen(3000, () => {
-    // tslint:disable-next-line: no-console
-    console.log('Ready!');
-  });
-}
-
 const badRequest = 'Bad request';
 const notFound = 'Not Found';
 
@@ -128,5 +121,12 @@ app.get('/deposits/:id', async (req, res) => {
       return res.status(400).send(badRequest);
     });
 });
+
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(3000, () => {
+    // tslint:disable-next-line: no-console
+    console.log('Ready!');
+  });
+}
 
 export default app;
