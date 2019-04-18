@@ -3,6 +3,7 @@ import BodyParser from 'body-parser';
 import firebase from 'firebase';
 
 import { BalanceCreateRequestBody, BalanceCreateResponseBody } from './models/balances';
+import { DepositCreateRequestBody, DepositCreateResponseBody } from './models/deposits';
 import config from './firebase/config';
 
 firebase.initializeApp(config);
@@ -62,6 +63,10 @@ app.get('/balances/:balanceId', async (req, res) => {
     .catch(() => {
       return res.status(400).send(badRequest);
     });
+});
+
+app.post('/deposits', async (req, res) => {
+  return res.status(400).send(badRequest);
 });
 
 export default app;
