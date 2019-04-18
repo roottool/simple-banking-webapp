@@ -17,7 +17,7 @@ describe('POST /balences', () => {
   });
 });
 
-describe('GET /balences/balancesId', () => {
+describe('GET /balences/:balancesId', () => {
   it('If the balance exists, get data.', async () => {
     const result = await request(app).get('/balances/0');
     expect(result.status).toBe(200);
